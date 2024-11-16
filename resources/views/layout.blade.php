@@ -18,6 +18,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
+          <a class="nav-link" href="/articles">Articles</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/articles/create">Articles create</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{{url('/about')}}">О нас</a>
         </li>
         <li class="nav-item">
@@ -35,8 +41,8 @@
           </ul>
         </li> -->
       </ul>
-        <a href="/auth/signup" class="btn btn-outline-success mr-3" style="margin-right: 3px;">Sign up</a>
-        <button class="btn btn-outline-success" type="submit">Button</button>
+        <a href="/auth/signin" class="btn btn-outline-success mr-3" style="margin-right: 3px;">Sign up</a>
+        <a class="btn btn-outline-success" type="submit" href="/auth/signup">Sign in</a>
     </div>
   </div>
 </nav>

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\ArticleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,8 +18,13 @@ use App\Http\Controllers\AuthController;
 
 //auth
 
-Route::get('/auth/signup', [AuthController::class, 'signup']);
+Route::get('/auth/signin', [AuthController::class, 'signin']);
 Route::post('/auth/register', [AuthController::class, 'register']);
+Route::get('/auth/signup', [AuthController::class, 'signup']);
+
+//Article
+
+Route::resource('/articles', ArticleController::class);
 
 Route::get('/', [MainController::class, 'index']);
 
