@@ -35,14 +35,16 @@
           </ul>
         </li> -->
       </ul>
-        <button class="btn btn-outline-success mr-3" style="margin-right: 3px;" type="submit">Button</button>
+        <a href="/auth/signup" class="btn btn-outline-success mr-3" style="margin-right: 3px;">Sign up</a>
         <button class="btn btn-outline-success" type="submit">Button</button>
     </div>
   </div>
 </nav>
     </header>
     <main>
+      <div class="container">
         @yield('content')
+      </div>
     </main>
     <footer>
         <p> Реунин Сергей Эдуардович 231-323 </p>
