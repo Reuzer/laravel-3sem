@@ -21,7 +21,7 @@ class ArticleFactory extends Factory
             'name' => $this->faker->sentence(),
             'date' => $this->faker->date(),
             'desc' => $this->faker->paragraph(),
-            'user_id' => User::factory()
+            'user_id'=>User::factory()->create(),
         ];
     }
 }

@@ -21,7 +21,7 @@
           <a class="nav-link" href="/articles">Articles</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/articles/create">Articles create</a>
+          <a class="nav-link active" aria-current="page" href="/article/create">Create article</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{url('/about')}}">О нас</a>
