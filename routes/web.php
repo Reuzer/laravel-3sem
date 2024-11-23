@@ -19,9 +19,11 @@ use App\Http\Controllers\CommentController;
 
 //auth
 
-Route::get('/auth/signin', [AuthController::class, 'signin']);
+Route::get('/auth/login', [AuthController::class, 'login'])->name('login');
+Route::post('/auth/authenticate', [AuthController::class, 'authenticate']);
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::get('/auth/signup', [AuthController::class, 'signup']);
+Route::get('/auth/logout', [AuthController::class, 'logout']);
 
 //Article
 

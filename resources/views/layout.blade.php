@@ -41,8 +41,9 @@
           </ul>
         </li> -->
       </ul>
-        <a href="/auth/signin" class="btn btn-outline-success mr-3" style="margin-right: 3px;">Sign up</a>
-        <a class="btn btn-outline-success" type="submit" href="/auth/signup">Sign in</a>
+        <a href="/auth/signup" class="btn btn-outline-success mr-3 me-3" style="margin-right: 3px;">Sign up</a>
+        <a class="btn btn-outline-success me-3" type="submit" href="/auth/login">Sign in</a>
+        <a class="btn btn-outline-success me-3" type="submit" href="/auth/logout">Logout</a>
     </div>
   </div>
 </nav>
