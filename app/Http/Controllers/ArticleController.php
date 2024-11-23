@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Comment;
 
 class ArticleController extends Controller
 {
@@ -14,7 +15,7 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = Article::latest()->paginate(6);
-        return view('articles.index', ['articles' => $articles]);
+        return view('article.index', ['articles' => $articles]);
     }
 
     /**
@@ -41,7 +42,7 @@ class ArticleController extends Controller
         $article->desc = request('desc');
         $article->user_id = auth() -> user()->id;
         $article->save();
-        return redirect()->route('articles.index');
+        return redirect()->route('article.index');
     }
 
     /**
@@ -49,8 +50,9 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
+        $comments = Comment::where('article_id', $article->id)->get();
         $user = User::findOrFail($article->user_id);
-        return view('article.show', ['article'=>$article, 'user'=>$user]);
+        return view('article.show', ['article'=>$article, 'user'=>$user, 'comments'=>$comments]);
     }
 
     /**

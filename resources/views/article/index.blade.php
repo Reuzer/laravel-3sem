@@ -15,7 +15,7 @@
       @foreach($articles as $article)  
       <tr>
         <th scope="row">{{$article->date}}</th>
-        <td>{{$article->name}}</td>
+        <td><a href="/articles/{{$article->id}}">{{$article->name}}</a></td>
         <td>{{$article->desc}}</td>
         <td>{{User::findOrFail($article->user_id) -> name}}</td>
       </tr>
