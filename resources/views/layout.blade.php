@@ -20,9 +20,14 @@
         <li class="nav-item">
           <a class="nav-link" href="/articles">Articles</a>
         </li>
+        @can('create')
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/article/create">Create article</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/comment/index">All comments</a>
+        </li>
+        @endcan
         <li class="nav-item">
           <a class="nav-link" href="{{url('/about')}}">О нас</a>
         </li>
@@ -41,9 +46,13 @@
           </ul>
         </li> -->
       </ul>
-        <a href="/auth/signup" class="btn btn-outline-success mr-3 me-3" style="margin-right: 3px;">Sign up</a>
-        <a class="btn btn-outline-success me-3" type="submit" href="/auth/login">Sign in</a>
-        <a class="btn btn-outline-success me-3" type="submit" href="/auth/logout">Logout</a>
+        @guest
+          <a href="/auth/signup" class="btn btn-outline-success mr-3 me-3" style="margin-right: 3px;">Sign up</a>
+          <a class="btn btn-outline-success me-3" type="submit" href="/auth/login">Sign in</a>
+        @endguest
+        @auth
+          <a class="btn btn-outline-success me-3" type="submit" href="/auth/logout">Logout</a>
+        @endauth
     </div>
   </div>
 </nav>

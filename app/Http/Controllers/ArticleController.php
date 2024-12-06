@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
-use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\Comment;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ArticleController extends Controller
 {
@@ -15,7 +16,7 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = Article::latest()->paginate(6);
-        return view('article.index', ['articles' => $articles]);
+        return view('article.index', ['articles'=> $articles]);
     }
 
     /**
@@ -23,7 +24,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return view('articles.create');
+        return view('article.create');
     }
 
     /**
@@ -31,18 +32,19 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', self::class);
         $request->validate([
-            'name' => 'required|min:6',
-            'desc' => 'required|max:256',
+            'date'=>'date',
+            'name'=>'required|min:5|max:100',
+            'desc'=>'required|min:5'
         ]);
-
         $article = new Article;
-        $article->date = request('date');
-        $article->name = request('name');
-        $article->desc = request('desc');
-        $article->user_id = auth() -> user()->id;
+        $article->date = $request->date;
+        $article->name = $request->name;
+        $article->desc = $request->desc;
+        $article->user_id = 1;
         $article->save();
-        return redirect()->route('article.index');
+        return redirect('/article');
     }
 
     /**
@@ -50,7 +52,9 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        $comments = Comment::where('article_id', $article->id)->get();
+        $comments = Comment::where('article_id',$article->id)
+        ->where('accept', true)
+        ->get();
         $user = User::findOrFail($article->user_id);
         return view('article.show', ['article'=>$article, 'user'=>$user, 'comments'=>$comments]);
     }
@@ -63,9 +67,12 @@ class ArticleController extends Controller
         return view('article.update', ['article'=>$article]);
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, Article $article)
     {
-        //
+        $this->authorize('update', $article, self::class);
         $request->validate([
             'date'=>'date',
             'name'=>'required|min:5|max:100',
@@ -80,9 +87,9 @@ class ArticleController extends Controller
     }
 
     
-
     public function destroy(Article $article)
     {
+        Gate::authorize('delete',$article);
         if ($article->delete()) return redirect('/article')->with('status','Delete success');
         else return redirect()->route('article.show', ['article'=>$article->id])->with('status','Delete don`t success');
     }

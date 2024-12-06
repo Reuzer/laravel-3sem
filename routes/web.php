@@ -31,10 +31,15 @@ Route::resource('/articles', ArticleController::class);
 
 //Comment
 
-Route::post('/comment', [CommentController::class, 'store']);
-Route::get('/comment/{id}/edit', [CommentController::class, 'edit']);
-Route::post('/comment/{comment}/update', [CommentController::class, 'update']);
-Route::get('/comment/{comment}/delete', [CommentController::class, 'destroy']);
+Route::controller(CommentController::class)->prefix('/comment')->middleware('auth:sanctum')->group(function(){
+    Route::post('','store');
+    Route::get('/{id}/edit', 'edit');
+    Route::post('/{comment}/update', 'update');
+    Route::get('/{id}/delete', 'delete');
+    Route::get('/index', 'index')->name('comment.index');
+    Route::get('/{comment}/accept', 'accept');
+    Route::get('/{comment}/reject', 'reject');
+});
 
 Route::get('/', [MainController::class, 'index']);
 
