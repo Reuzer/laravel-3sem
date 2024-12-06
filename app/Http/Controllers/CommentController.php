@@ -3,8 +3,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Comment;
 use App\Models\Article;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\NewCommentMail;
+use App\Jobs\VeryLongJob;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +42,7 @@ class CommentController extends Controller
         }
 
         if ($comment->save()){
-            Mail::to('SergeyReunin1@gmail.com')->send(new NewCommentMail($comment, $article->name));
+            VeryLongJob::dispatch($comment, $article->name);
             return redirect()->route('article.show', $comment->article_id)->with('status', 'New comment send to moderation');
         } 
     }
