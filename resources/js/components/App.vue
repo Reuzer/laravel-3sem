@@ -16,7 +16,3 @@ export default {
     }
 
 </script>
-
-<template>
-    <p>abuba</p>
-</template>

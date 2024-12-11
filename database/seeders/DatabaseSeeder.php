@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(
             UserSeeder::class,
         );
+        Article::factory(10)->has(Comment::factory(3))->create();
     }
 }

@@ -45,7 +45,7 @@ class ArticleController extends Controller
         $article->user_id = 1;
         if($article->save()){
             NewArticleEvent::dispatch($article);
-            return redirect('/article');
+            return redirect('/articles');
         };
         
         
@@ -56,6 +56,9 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
+        if(isset($_GET['notify'])) {
+            auth()->user()->notifications->where('id', $_GET['notify'])->first()->markAsRead();
+        }
         $comments = Comment::where('article_id',$article->id)
         ->where('accept', true)
         ->get();

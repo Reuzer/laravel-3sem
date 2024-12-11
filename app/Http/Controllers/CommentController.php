@@ -3,10 +3,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Comment;
 use App\Models\Article;
+use App\Models\User;
 use App\Jobs\VeryLongJob;
+use App\Notifications\NewCommentNotify;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 class CommentController extends Controller
 {
     public function index(){
@@ -16,6 +19,8 @@ class CommentController extends Controller
 
 
     public function store(Request $request){
+        $article = Article::findOrFail(request('article_id'));
+        $users = User::where('id','!=', auth()->user()->id)->get();
         $article = Article::findOrFail($request->article_id);
         $request->validate([
             "name"=>'required|min:4',
@@ -28,11 +33,9 @@ class CommentController extends Controller
         $comment->article_id = request('article_id');
         $comment->user_id = Auth::id();
         if($comment->save()){
-            return redirect()->route('articles.show', $comment->article_id)
-            ->with(
-                'status',
-                'Added comment'
-            );
+            VeryLongJob::dispatch($comment, $article->name);
+            Notification::send($users, new NewCommentNotify($article, $comment->name));
+            return redirect()->route('articles.show', $comment->article_id)->with('status', 'New comment send to moderation');
         }else{
             return redirect()->route('articles.show', $comment->article_id)
             ->with(
@@ -40,11 +43,6 @@ class CommentController extends Controller
                 'Unable to add'
             );
         }
-
-        if ($comment->save()){
-            VeryLongJob::dispatch($comment, $article->name);
-            return redirect()->route('article.show', $comment->article_id)->with('status', 'New comment send to moderation');
-        } 
     }
 
     public function edit($id){
@@ -72,5 +70,22 @@ class CommentController extends Controller
         Gate::authorize('update_comment', $comment);
         $comment->delete();
         return redirect()->route('articles.show', $comment->article_id)->with('status', 'Deleted');
+    }
+
+    public function accept(Comment $comment){
+        $article = Article::findOrFail($comment->article_id);
+        $users = User::where('id', '!=', $comment->user_id)->get();
+        $comment->accept = true;
+        if($comment->save()){
+            Notification::send($users, new NewCommentNotify($article, $comment->name));
+            return redirect()->route('comment.index');
+        };
+        
+    }
+
+    public function reject(Comment $comment){
+        $comment->accept = false;
+        $comment->save();
+        return redirect()->route('comment.index');
     }
 }
