@@ -61,9 +61,7 @@
     </header>
     <main>
       <div class="container">
-        <div id=app>
-          
-        </div>
+        <div id="app"></div>
         @yield('content')
       </div>
     </main>

@@ -14,7 +14,7 @@
       {{ session('status') }}
   </div>
 @endif
-<form action="/article/{{ $article->id }}" method="POST">
+<form action="/articles/{{ $article->id }}" method="POST">
   @csrf
   @method('PUT')
   <div class="mb-3">
@@ -27,7 +27,7 @@
   </div>
   <div class="mb-3">
     <label for="desc" class="form-label">Description</label>
-    <textarea name="desc" class="form-control" id="desc">{{ $article->desc }}"</textarea>
+    <textarea name="desc" class="form-control" id="desc">{{ $article->desc }}</textarea>
   </div>
   <button type="submit" class="btn btn-primary">Update article</button>
 </form>

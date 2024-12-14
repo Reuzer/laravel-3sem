@@ -13,8 +13,8 @@
     <p class="card-text">{{ $article->desc }}</p>
     <div class="d-flex justify-content-end gap-3">
       @can('update', $article)
-        <a href="/article/{{ $article->id }}/edit" class="btn btn-primary">Edit article</a>
-        <form action="/article/{{ $article->id }}" method="POST">
+        <a href="/articles/{{ $article->id }}/edit" class="btn btn-primary">Edit article</a>
+        <form action="/articles/{{ $article->id }}" method="POST">
             @method('DELETE')
             @csrf
             <button type="submit" class="btn btn-warning">Delete article</button>
@@ -45,6 +45,7 @@
   <h3 class="text-center">Comments</h3>
 <div class="row">
   @foreach($comments as $comment)
+  @if($comment->article_id === $article->id)
   <div class="col-sm-6 mb-3 mb-sm-0 mt-2">
     <div class="card">
       <div class="card-body">
@@ -57,6 +58,7 @@
       </div>
     </div>
   </div>
+  @endif
   @endforeach
 </div>
 </div>
